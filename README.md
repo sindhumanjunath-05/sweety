@@ -96,7 +96,7 @@ Built with a **Node.js + Express** REST API, a **PostgreSQL** relational databas
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/sweety.git
+git clone https://github.com/sindhumanjunath-05/sweety.git
 cd sweety
 ```
 
