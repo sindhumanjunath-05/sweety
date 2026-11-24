@@ -1,0 +1,24 @@
+{
+  "name": "sweety",
+  "version": "1.0.0",
+  "description": "Sweety – Blood Glucose Tracker (Node.js + Express + PostgreSQL + React)",
+  "scripts": {
+    "server": "npm --prefix server run dev",
+    "client": "npm --prefix client run dev",
+    "seed": "npm --prefix server run seed",
+    "migrate": "npm --prefix server run migrate",
+    "test:server": "npm --prefix server test",
+    "test:client": "npm --prefix client test",
+    "test": "npm run test:server && npm run test:client",
+    "build": "npm --prefix client run build"
+  },
+  "keywords": [
+    "diabetes",
+    "blood-glucose-tracker",
+    "express",
+    "react",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "MIT"
+}
