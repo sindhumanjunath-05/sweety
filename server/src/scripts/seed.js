@@ -92,7 +92,7 @@ const seed = async () => {
       }
     }
 
-    // C. Whole previous month readings (for Monthly report)
+    // C. Whole previous month readings (for Monthly report relative to current date)
     let prevYear = currentYear;
     let prevMonth = currentMonth; // previous month is currentMonth in 1-indexed, so currentMonth (0-indexed) = prev month number
     if (prevMonth === 0) {
@@ -121,6 +121,22 @@ const seed = async () => {
           date: dayStr,
           slot: slots[3],
           value: 118 + ((day * 8) % 38),
+        });
+      }
+    }
+
+    // D. Explicit Assignment Example Range: September 2026 (for 15 Oct 2026 previous-month report)
+    for (let day = 1; day <= 30; day++) {
+      const dayStr = `2026-09-${String(day).padStart(2, '0')}`;
+      readingsToInsert.push(
+        { date: dayStr, slot: slots[0], value: 90 + ((day * 2) % 25) },
+        { date: dayStr, slot: slots[1], value: 135 + ((day * 5) % 40) }
+      );
+      if (day % 2 === 0) {
+        readingsToInsert.push({
+          date: dayStr,
+          slot: slots[2],
+          value: 125 + ((day * 3) % 35),
         });
       }
     }
