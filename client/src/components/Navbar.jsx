@@ -26,59 +26,74 @@ export const Navbar = ({ activeTab, onTabChange, onOpenAddModal }) => {
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-1">
-            <button
-              onClick={() => onTabChange('dashboard')}
-              className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === 'dashboard'
-                  ? 'bg-rose-50 text-rose-700 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <Activity className="w-4 h-4" />
-              <span>Dashboard</span>
-            </button>
+            {user?.role === 'doctor' ? (
+              <span className="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-bold bg-teal-50 text-teal-800 border border-teal-200">
+                <BarChart3 className="w-4 h-4 text-teal-600" />
+                <span>Doctor Clinical Portal</span>
+              </span>
+            ) : (
+              <>
+                <button
+                  onClick={() => onTabChange('dashboard')}
+                  className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                    activeTab === 'dashboard'
+                      ? 'bg-rose-50 text-rose-700 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  <Activity className="w-4 h-4" />
+                  <span>Dashboard</span>
+                </button>
 
-            <button
-              onClick={() => onTabChange('readings')}
-              className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === 'readings'
-                  ? 'bg-rose-50 text-rose-700 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <ListFilter className="w-4 h-4" />
-              <span>Readings Log</span>
-            </button>
+                <button
+                  onClick={() => onTabChange('readings')}
+                  className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                    activeTab === 'readings'
+                      ? 'bg-rose-50 text-rose-700 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  <ListFilter className="w-4 h-4" />
+                  <span>Readings Log</span>
+                </button>
 
-            <button
-              onClick={() => onTabChange('reports')}
-              className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === 'reports'
-                  ? 'bg-rose-50 text-rose-700 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <BarChart3 className="w-4 h-4" />
-              <span>Reports</span>
-            </button>
+                <button
+                  onClick={() => onTabChange('reports')}
+                  className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                    activeTab === 'reports'
+                      ? 'bg-rose-50 text-rose-700 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  <span>Reports</span>
+                </button>
+              </>
+            )}
           </nav>
 
           {/* Right actions: Quick Add Reading + User profile + Logout */}
           <div className="flex items-center space-x-3">
-            <button
-              onClick={onOpenAddModal}
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white rounded-lg text-sm font-semibold shadow-sm shadow-rose-600/30 transition-all active:scale-[0.98]"
-            >
-              <span>+ Log Reading</span>
-            </button>
+            {user?.role !== 'doctor' && (
+              <button
+                onClick={onOpenAddModal}
+                className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white rounded-lg text-sm font-semibold shadow-sm shadow-rose-600/30 transition-all active:scale-[0.98]"
+              >
+                <span>+ Log Reading</span>
+              </button>
+            )}
 
             <div className="hidden sm:flex items-center pl-2 border-l border-slate-200 space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-semibold text-xs border border-slate-300">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs border ${
+                user?.role === 'doctor'
+                  ? 'bg-teal-100 text-teal-800 border-teal-300'
+                  : 'bg-slate-100 text-slate-600 border-slate-300'
+              }`}>
                 {user?.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
               </div>
               <div className="text-left text-xs">
                 <p className="font-semibold text-slate-800 leading-tight truncate max-w-[120px]">{user?.name}</p>
-                <p className="text-slate-400 text-[11px] truncate max-w-[120px]">{user?.email}</p>
+                <p className="text-slate-400 text-[11px] truncate max-w-[120px]">{user?.role === 'doctor' ? 'Physician' : user?.email}</p>
               </div>
             </div>
 

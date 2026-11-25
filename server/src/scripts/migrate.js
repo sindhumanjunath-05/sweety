@@ -33,6 +33,17 @@ const migrate = async () => {
       );
     `);
 
+    // Create doctor_patients assignment table (Bonus: Doctor role)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS doctor_patients (
+        id SERIAL PRIMARY KEY,
+        doctor_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        patient_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        CONSTRAINT unique_doctor_patient UNIQUE (doctor_id, patient_id)
+      );
+    `);
+
     // Create indexes for fast lookup and reporting
     await client.query(`
       CREATE INDEX IF NOT EXISTS idx_readings_user_date ON readings(user_id, date);

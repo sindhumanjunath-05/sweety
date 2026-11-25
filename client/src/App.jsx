@@ -8,11 +8,12 @@ import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ReadingsPage } from './pages/ReadingsPage';
 import { ReportsPage } from './pages/ReportsPage';
+import { DoctorPortalPage } from './pages/DoctorPortalPage';
 import { api } from './api/client';
 import { CheckCircle, HeartPulse } from 'lucide-react';
 
 export const App = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const [authView, setAuthView] = useState('login'); // 'login' | 'register'
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'readings' | 'reports'
 
@@ -138,27 +139,33 @@ export const App = () => {
 
       {/* Main Tab Content */}
       <main className="flex-1 pb-16">
-        {activeTab === 'dashboard' && (
-          <DashboardPage
-            onNavigate={setActiveTab}
-            onOpenAddModalWithSlot={handleOpenAddModalWithSlot}
-            onOpenEditModal={handleOpenEditModal}
-          />
-        )}
+        {user?.role === 'doctor' ? (
+          <DoctorPortalPage />
+        ) : (
+          <>
+            {activeTab === 'dashboard' && (
+              <DashboardPage
+                onNavigate={setActiveTab}
+                onOpenAddModalWithSlot={handleOpenAddModalWithSlot}
+                onOpenEditModal={handleOpenEditModal}
+              />
+            )}
 
-        {activeTab === 'readings' && (
-          <ReadingsPage
-            onOpenAddModal={handleOpenAddModal}
-            onOpenEditModal={handleOpenEditModal}
-            onOpenDeleteModal={handleOpenDeleteModal}
-            refreshTrigger={refreshTrigger}
-          />
-        )}
+            {activeTab === 'readings' && (
+              <ReadingsPage
+                onOpenAddModal={handleOpenAddModal}
+                onOpenEditModal={handleOpenEditModal}
+                onOpenDeleteModal={handleOpenDeleteModal}
+                refreshTrigger={refreshTrigger}
+              />
+            )}
 
-        {activeTab === 'reports' && (
-          <ReportsPage
-            onOpenAddModalWithDate={handleOpenAddModalWithDate}
-          />
+            {activeTab === 'reports' && (
+              <ReportsPage
+                onOpenAddModalWithDate={handleOpenAddModalWithDate}
+              />
+            )}
+          </>
         )}
       </main>
 

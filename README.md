@@ -61,13 +61,14 @@ Built with a **Node.js + Express** REST API, a **PostgreSQL** relational databas
 
 ### Completed Bonus Features
 
+- 🩺 **Doctor Role Portal**: A dedicated physician account (`doctor@sweety.com`) that can inspect assigned patients, review their daily slot breakdown, multi-window reports, and monthly trend graphs.
 - 📈 **Interactive Charts (Recharts)**: Visualizes blood glucose fluctuations over time with clinical reference lines (70 – 140 mg/dl).
 - 📄 **Pagination on GET /readings**: Server-side pagination support (`?page=1&limit=20`) returning total count, page, and totalPages.
 - 🐳 **Docker & Docker Compose**: Full `docker-compose.yml` orchestrating PostgreSQL 17, Express API, and Nginx-backed React frontend.
 - 🧪 **Automated Test Suite**:
-  - **Backend**: Jest + Supertest covering Auth, Readings CRUD, validation edge cases, and Reports calculation (28 passing tests).
-  - **Frontend**: Vitest + React Testing Library testing form rendering, client-side validation messages, and submission (7 passing tests).
-- 🌱 **Comprehensive Demo Seed Script**: Generates 160+ realistic readings spanning current and previous months, plus an isolated second user to verify data security.
+  - **Backend (32 tests)**: Jest + Supertest covering Auth, Readings CRUD, Doctor access control, validation edge cases, and Reports calculation.
+  - **Frontend (7 tests)**: Vitest + React Testing Library testing form rendering, client-side validation messages, and submission.
+- 🌱 **Comprehensive Demo Seed Script**: Generates 240+ realistic readings spanning current and previous months, creates doctor and patient roles, and sets up patient assignments.
 
 ---
 
@@ -268,6 +269,13 @@ npm --prefix client test
 | `GET` | `/api/reports/month-to-date?date=...` | Returns Month-to-date report (1st to selected date) | Yes |
 | `GET` | `/api/reports/monthly?date=...` | Returns Monthly report (whole previous month) | Yes |
 
+### Doctor Portal Endpoints (Bonus Feature)
+
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| `GET` | `/api/doctor/patients` | Lists all patients assigned to the authenticated doctor | Yes (`doctor` role) |
+| `GET` | `/api/doctor/patients/:patientId/reports` | Returns Daily, MTD, and Monthly reports for an assigned patient | Yes (`doctor` role) |
+
 ---
 
 ## 🔒 Validation Rules Summary
@@ -284,14 +292,23 @@ npm --prefix client test
 
 ## 👤 Demo Credentials
 
-The seed script creates the following pre-configured demo account:
+The seed script creates the following pre-configured demo accounts:
 
+### 1. Patient Account
 - **Email**: `demo@sweety.com`
 - **Password**: `Password123!`
-- **Sample Readings**: 160+ readings pre-populated across current and previous months (including Morning, Breakfast, Lunch, and Dinner slots).
-- **Secondary User (Isolation Test)**: `other@sweety.com` / `OtherPass123!`
+- **Sample Readings**: 240+ readings across current, previous, and September 2026 dates (including Morning, Breakfast, Lunch, and Dinner slots).
 
-*(You can also click the **"Use Demo Login"** button on the login screen for instant 1-click access).*
+### 2. Doctor Account (Bonus Feature)
+- **Email**: `doctor@sweety.com`
+- **Password**: `Doctor123!`
+- **Assigned Patients**: Demo Patient (`demo@sweety.com`), Other Patient (`other@sweety.com`).
+
+### 3. Secondary Patient (Isolation Test)
+- **Email**: `other@sweety.com`
+- **Password**: `OtherPass123!`
+
+*(You can also click the **"Demo Patient"** or **"Doctor Role 🩺"** buttons on the login screen for instant 1-click access).*
 
 ---
 

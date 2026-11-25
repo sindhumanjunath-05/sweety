@@ -29,6 +29,12 @@ export const LoginPage = ({ onSwitchToRegister }) => {
     setError('');
   };
 
+  const handleFillDoctor = () => {
+    setEmail('doctor@sweety.com');
+    setPassword('Doctor123!');
+    setError('');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-rose-50 via-slate-50 to-amber-50">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-200/80 p-8 sm:p-10">
@@ -42,21 +48,30 @@ export const LoginPage = ({ onSwitchToRegister }) => {
         </div>
 
         {/* Demo Account Quick-Fill Card */}
-        <div className="mb-6 p-3.5 bg-gradient-to-r from-amber-50 to-rose-50 rounded-2xl border border-amber-200/70 flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
+        <div className="mb-6 p-3.5 bg-gradient-to-r from-amber-50 to-rose-50 rounded-2xl border border-amber-200/70">
+          <div className="flex items-center space-x-2.5 mb-2.5">
             <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
             <div className="text-left text-xs">
-              <p className="font-bold text-amber-900">Testing this app?</p>
-              <p className="text-amber-700 text-[11px]">Pre-filled with 160+ sample readings</p>
+              <p className="font-bold text-amber-900">Testing this app? 1-Click Login:</p>
+              <p className="text-amber-700 text-[11px]">Choose between patient and doctor roles</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleFillDemo}
-            className="px-3 py-1.5 text-xs font-bold text-amber-800 bg-white/90 hover:bg-white rounded-xl shadow-xs border border-amber-300 transition-all hover:scale-105 active:scale-95"
-          >
-            Use Demo Login
-          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={handleFillDemo}
+              className="py-1.5 px-2 text-xs font-bold text-amber-800 bg-white/95 hover:bg-white rounded-xl shadow-xs border border-amber-300 transition-all text-center"
+            >
+              Demo Patient
+            </button>
+            <button
+              type="button"
+              onClick={handleFillDoctor}
+              className="py-1.5 px-2 text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 rounded-xl shadow-xs border border-teal-300 transition-all text-center"
+            >
+              Doctor Role 🩺
+            </button>
+          </div>
         </div>
 
         {/* Error message */}

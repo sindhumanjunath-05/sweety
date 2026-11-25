@@ -41,6 +41,28 @@ const seed = async () => {
     );
     const otherUser = otherResult.rows[0];
 
+    // 3. Create Doctor Account (Bonus: Doctor role)
+    const doctorEmail = 'doctor@sweety.com';
+    const doctorHash = await bcrypt.hash('Doctor123!', salt);
+    let doctorResult = await client.query(
+      `INSERT INTO users (name, email, password_hash, role)
+       VALUES ($1, $2, $3, 'doctor')
+       ON CONFLICT (email) DO UPDATE
+       SET name = EXCLUDED.name, password_hash = EXCLUDED.password_hash, role = 'doctor'
+       RETURNING id, name, email`,
+      ['Dr. Sarah Smith, MD', doctorEmail, doctorHash]
+    );
+    const doctorUser = doctorResult.rows[0];
+
+    // Assign Demo Patient and Other Patient to this doctor
+    await client.query('DELETE FROM doctor_patients WHERE doctor_id = $1', [doctorUser.id]);
+    await client.query(
+      `INSERT INTO doctor_patients (doctor_id, patient_id)
+       VALUES ($1, $2), ($1, $3)
+       ON CONFLICT (doctor_id, patient_id) DO NOTHING`,
+      [doctorUser.id, demoUser.id, otherUser.id]
+    );
+
     // Clear existing readings for clean seeding
     await client.query('DELETE FROM readings WHERE user_id IN ($1, $2)', [
       demoUser.id,
@@ -166,6 +188,11 @@ const seed = async () => {
     console.log(`   Email:    ${demoEmail}`);
     console.log(`   Password: ${demoPassword}`);
     console.log(`   Readings: ${readingsToInsert.length} samples added`);
+    console.log('----------------------------------------------------');
+    console.log('🩺 Doctor Account (Bonus Task):');
+    console.log(`   Email:    ${doctorEmail}`);
+    console.log(`   Password: Doctor123!`);
+    console.log('   Assigned: Demo Patient, Other Patient');
     console.log('----------------------------------------------------');
     console.log('👤 Other User (for isolation testing):');
     console.log(`   Email:    ${otherEmail}`);
